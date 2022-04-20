@@ -1,0 +1,6 @@
+apiVersion: operator.adysof.com/v1alpha1
+kind: Grav
+metadata:
+  name: mygrav2
+spec:
+  domain: www.mygrav2.com

@@ -1,0 +1,24 @@
+# permissions for end users to edit gravs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: grav-editor-role
+rules:
+- apiGroups:
+  - operator.adysof.com
+  resources:
+  - gravs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - operator.adysof.com
+  resources:
+  - gravs/status
+  verbs:
+  - get

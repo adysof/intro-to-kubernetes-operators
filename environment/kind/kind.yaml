@@ -1,0 +1,27 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: operators
+networking: {}
+nodes:
+- role: control-plane
+  image: kindest/node:v1.21.2
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+    ## expose port 80 of the node to port 80 on the host
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+    ## expose port 443 of the node to port 443 on the host
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+    ## expose port 6443 of the node to port 8443 on the host
+  - containerPort: 17443
+    hostPort: 17443
+    protocol: TCP
+
