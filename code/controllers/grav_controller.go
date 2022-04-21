@@ -64,7 +64,7 @@ func (r *GravReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 
 	grav := &operatorv1alpha1.Grav{}
 	if err := r.Client.Get(ctx, req.NamespacedName, grav); err != nil {
-		if !k8serrors.IsNotFound(err) {
+		if k8serrors.IsNotFound(err) {
 			return ctrl.Result{}, nil
 		}
 		return ctrl.Result{}, err
@@ -159,9 +159,6 @@ func (r *GravReconciler) updateStatus(ctx context.Context, namespacedName k8styp
 	grav := &operatorv1alpha1.Grav{}
 
 	if err := r.Client.Get(ctx, namespacedName, grav); err != nil {
-		if !k8serrors.IsNotFound(err) {
-			return nil
-		}
 		return err
 	}
 

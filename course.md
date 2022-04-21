@@ -7,21 +7,28 @@ revealOptions:
   transition: 'none'
 ---
 
-<div style="text-align:center"><img style="border-style:none;" src ="./images/operators-operators-everywhere.jpg" /></div>
-
-<!--s-->
-# Content
-
-* Introduction to Kubernetes Operators
-* Kubernetes API
-* Kubernetes RBAC
-* Operator Framework SDK
-* Managing Internal Kubernetes Objects
-
-
-<!--s-->
 <!-- page_number: true -->
 <!-- $size: A4 -->
+
+<div style="text-align:center"><img style="border-style:none;" src ="./images/title.jpg" /></div>
+
+<!--s-->
+
+## whoami
+ <div class="row" style="display:flex">
+  <div class="column" style="flex:50%">
+    <img style="display:block;margin-left:auto;margin-right:auto;width:50%;" src ="./images/gonzalo.jpg" />
+  </div>
+  <div class="column" style="flex:50%;text-align:left">
+    <li> Cloud Native Consultant</li>
+    </br>
+    <li> You can find me as <b>mendrugory</b> on internet </li>
+    </br>
+    <li> Visit <b>www.adysof.com</b> to see professional stuffs </li>
+  </div>
+</div> 
+
+<!--s-->
 
 # Introduction to Kubernetes Operators
 
@@ -71,6 +78,15 @@ revealOptions:
 
 <embed type="text/html" src="https://kind.sigs.k8s.io/" width="1000" height="600"> 
 
+
+<!--s-->
+
+## Dev Container
+
+<div style="display:block;margin-left:auto;margin-right:auto;width:90%;"><img style="border-style:none;" src ="./images/devcontainer.png" /></div>
+
+<p>https://github.com/adysof/devcontainer-operators-development</p>
+
 <!--s-->
 
 
@@ -95,13 +111,10 @@ revealOptions:
 
 <div style="display:block;margin-left:auto;margin-right:auto;width:60%;"><img style="border-style:none;" src ="./images/approaches.png" /></div>
 
-<!--s-->
-
-## Loop Controller
-
-<div style="display:block;margin-left:auto;margin-right:auto;width:100%;"><img style="border-style:none;" src ="./images/loop-external.png" /></div>
+<div style="text-align:right;font-size:18px;">Image from Programming Kubernetes, O'Reilly Media</div>
 
 <!--s-->
+
 
 ### How is my infra/app represented?
 
@@ -144,18 +157,12 @@ spec:
 
 <embed type="text/html" src="https://kubernetes.io/docs/concepts/overview/kubernetes-api/" width="1000" height="600"> 
 
-<!--s-->
 
-
-## URIs
-
-<div style="display:block;margin-left:auto;margin-right:auto;"><img style="border-style:none;width:100%;" src ="./images/api-server-uri-tree.png" /></div>
 
 <!--s-->
 
-## URI
+## Let's check it out
 
-<div style="display:block;margin-left:auto;margin-right:auto;width:50%;"><img style="border-style:none;" src ="./images/api-server-uri.png" /></div>
 
 <!--s-->
 
@@ -427,67 +434,12 @@ yes
 
 <!--s-->
 
-## Can SA get svc?
+## Can SA delete pods?
 
 ```bash
-$ kubectl auth can-i get svc \
+$ kubectl auth can-i delete pods \
   --as system:serviceaccount:default:my-sa
 no
-```
-
-<!--s-->
-
-## Can SA create deployments?
-
-```bash
-$ $ kubectl auth can-i create deployments \
-  --as system:serviceaccount:default:my-sa
-no
-```
-
-<!--s-->
-
-## Allow SA to Read and Create deployments
-
-```bash
-$ kubectl edit role my-sa
-```
-
-```diff
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  creationTimestamp: "2022-02-11T14:45:37Z"
-  name: my-sa
-  namespace: default
-  resourceVersion: "71653"
-  uid: b4c00187-cdfc-42c8-8880-ab030dad6fa1
-rules:
-  - apiGroups:
-    - ""
-    resources:
-    - pods
-    verbs:
-    - list
-    - get
-+ - apiGroups:
-+   - apps    
-+   resources:
-+   - deployments
-+   verbs:
-+   - list
-+   - get
-+   - create
-```
-
-<!--s-->
-
-## Can SA create deployments?
-
-```bash
-$ kubectl auth can-i create deployments \
-  --as system:serviceaccount:default:my-sa
-yes
 ```
 
 <!--s-->
@@ -528,49 +480,6 @@ $ TOKEN=$(kubectl get secret my-sa-token-jzntp -o json \
 
 <!--s-->
 
-## Kubeconfig SA
-
-*/tmp/sa.kubeconfig*
-
-```yaml
-apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    certificate-authority-data: <BASE64 CA_DATA>
-    server: <SERVER>
-  name: my-cluster
-users:
-- name: my-user
-  user:
-    token: <DECODED TOKEN>  
-contexts:
-- context:
-    cluster: my-cluster
-    user: my-user
-  name: default-context
-current-context: default-context
-```
-
-<!--s-->
-
-## Kubeconfig SA
-```bash
-$ export KUBECONFIG=/tmp/sa.kubeconfig
-
-$ kubectl create deployment nginx --image=nginx
-deployment.apps/nginx created
-
-$ kubectl get po
-NAME                     READY   STATUS              RESTARTS   AGE
-nginx-6799fc88d8-w2c4n   0/1     ContainerCreating   0          3s
-
-$ kubectl delete deployments nginx
-Error from server (Forbidden): deployments.apps "nginx" is forbidden: User "system:serviceaccount:default:my-sa" cannot delete resource "deployments" in API group "apps" in the namespace "default"
-```
-
-<!--s-->
-
 ## REST API SA
 
 <embed type="text/html" src="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#putting-a-bearer-token-in-a-request" width="1000" height="600"> 
@@ -588,10 +497,6 @@ $ curl -k \
   -H "Authorization: Bearer $TOKEN" \
   https://127.0.0.1:33257/apis/apps/v1/namespaces/default/deployments
 ```
-
-<!--s-->
-
-# Frameworks
 
 <!--s-->
 
@@ -626,7 +531,7 @@ $ operator-sdk --help
 
 <!--s-->
 
-# Managing Internal Kubernetes Objects
+# Grav as a Service
 
 <!--s-->
 
@@ -867,7 +772,7 @@ func (r *WordpressReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
   grav := &operatorv1alpha1.Grav{}
   if err := r.Client.Get(ctx, req.NamespacedName, grav); err != nil {
-    if !k8serrors.IsNotFound(err) {
+    if k8serrors.IsNotFound(err) {
       return ctrl.Result{}, nil
     }
     return ctrl.Result{}, err
@@ -990,9 +895,6 @@ func (r *GravReconciler) SetupWithManager(mgr ctrl.Manager) error {
 +	grav := &operatorv1alpha1.Grav{}
 +
 +	if err := r.Client.Get(ctx, namespacedName, grav); err != nil {
-+		if !k8serrors.IsNotFound(err) {
-+			return nil
-+		}
 +		return err
 +	}
 +
@@ -1197,8 +1099,13 @@ $ kubectl create rolebinding my-sa-gravadmin \
 <!--s-->
 
 ```bash
-$ curl -XPOST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -k https://127.0.0.1:46221/apis/operator.adysof.com/v1alpha1/namespaces/default/gravs?fieldManager=curl -d '{"apiVersion":"operator.adysof.com/v1alpha1","kind":"Grav","metadata":{"name":"mygrav","namespace":"default"},"spec":{"domain":"www.mygrav.com"}}'
+$ curl -XPOST -H "Authorization: Bearer $TOKEN" \ 
+  -H "Content-Type: application/json" -k \
+  https://127.0.0.1:46221/apis/operator.adysof.com/v1alpha1/namespaces/default/gravs?fieldManager=curl \
+  -d '{"apiVersion":"operator.adysof.com/v1alpha1","kind":"Grav","metadata":{"name":"mygrav","namespace":"default"},"spec":{"domain":"www.mygrav.com"}}'
 ```
+
+<!--s-->
 
 ## Next Steps
 
