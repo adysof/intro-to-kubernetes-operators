@@ -24,7 +24,9 @@ revealOptions:
     </br>
     <li> You can find me as <b>mendrugory</b> on internet </li>
     </br>
-    <li> Visit <b>www.adysof.com</b> to see professional stuffs </li>
+    <li> Enjoying a wonderful journey with <b>Clastix</b> </li>
+    </br>
+    <li> Visit <b>www.adysof.com</b> to see professional stuffs </li>    
   </div>
 </div> 
 
@@ -85,7 +87,7 @@ revealOptions:
 
 <div style="display:block;margin-left:auto;margin-right:auto;width:90%;"><img style="border-style:none;" src ="./images/devcontainer.png" /></div>
 
-<p>https://github.com/adysof/devcontainer-operators-development</p>
+[https://github.com/adysof/devcontainer-operators-development](https://github.com/adysof/devcontainer-operators-development)
 
 <!--s-->
 
@@ -1112,6 +1114,7 @@ $ curl -XPOST -H "Authorization: Bearer $TOKEN" \
 * SW Engineering
 * Storage
 * HA
+* DNS Record Registration
 * ...
 * Whatever you can imaging
 
